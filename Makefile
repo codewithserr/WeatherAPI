@@ -1,27 +1,54 @@
-# Definición de variables
-CXX = g++
-CXXFLAGS = -std=c++11 -Wall -IInclude
-SRC_DIR = src
-OBJ_DIR = obj
+appname := weather_app
+CXX := g++
+CXXFLAGS := -Wall -g
+srcdir := src
+includedir := Include
+objdir := obj
 
-# Lista de archivos fuente y objetos
-SRCS = $(wildcard $(SRC_DIR)/*.cpp)
-OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
+# Obtener la lista de archivos de código fuente en la carpeta src/
+srcfiles := $(wildcard $(srcdir)/*.cpp)
 
-# Nombre del ejecutable
-TARGET = weather_app
+# Agregar main.cpp a la lista de archivos fuente
+srcfiles += main.cpp
 
-# Regla de construcción del ejecutable
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+# Generar la lista de objetos correspondientes a los archivos fuente
+objects := $(patsubst $(srcdir)/%.cpp, $(objdir)/%.o, $(filter-out main.cpp, $(srcfiles)))
+objects += $(patsubst %.cpp, $(objdir)/%.o, $(filter main.cpp, $(srcfiles)))
 
-# Regla de construcción de los objetos
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+# Rutas de inclusión
+CPPFLAGS := -I$(includedir)
 
-# Regla de limpieza
+# Reglas
+all: $(appname)
+
+$(appname): $(objects)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $(appname) $(objects) $(LDLIBS)
+
+# Regla para generar los archivos de dependencias
+depend: .depend
+
+.depend: $(srcfiles)
+	rm -f ./.depend
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -MM $^>>./.depend;
+
 clean:
-	$(RM) $(TARGET) $(OBJS)
+	rm -rf $(objdir) $(appname)
 
-# Regla phony para prevenir conflictos con archivos llamados "clean" o "all"
-.PHONY: clean
+dist-clean: clean
+	rm -f *~ .depend
+
+# Crear la carpeta obj/ si no existe
+$(objdir):
+	mkdir -p $(objdir)
+
+# Regla para compilar los archivos fuente y generar los archivos objeto
+$(objdir)/%.o: $(srcdir)/%.cpp | $(objdir)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -o $@ $<
+
+$(objdir)/main.o: main.cpp | $(objdir)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -o $@ $<
+
+# Incluye el archivo de dependencias si existe
+ifneq ($(wildcard ./.depend),)
+include .depend
+endif
