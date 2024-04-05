@@ -1,4 +1,4 @@
-# WeatherAPI
+# WeatherApp
 Weather API implementation using OpenWeatherMap API. The programming languages used for this 
 project will be C++ and Python.
 
