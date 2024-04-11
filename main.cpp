@@ -10,27 +10,37 @@ from Openweathermap API and presents it to the user
 #include <cstring>
 #include "include/weather.h"
 #include "include/APIclient.h"
+#include "include/utils.h"
 
 int main()
 {
 /*
     Lo que está actualmente escrito en este main es una prueba para corroborar que se parsea
     el fichero JSON que llegue, se introducen los datos en una estructura, y se imprime
-    por pantalla
+    por pantalla.
 */
-
+ 
+    //Leemos la API KEY del fichero separado.
+    std::string API_KEY = readAPIkeyFromFile("API_KEY");
+    
     //Creamos el objeto de la clase Weather, y lo inicializamos para pruebas
     weather weatherCity(10., 10., 0., "Madrid");
-    
-    // Ejemplo de JSON de respuesta de la API
-    std::string jsonResponse = R"({"current": {"dt": 25}, "weather": [{"description": "Cielo despejado"}]})";
 
+    //Construimos la URL para la petición a la API
+    std::string URL = "https://api.openweathermap.org/data/3.0/onecall?lat=33.44&lon=-94.04&appid=" + API_KEY;
+
+    //Creamos el objeto de la clase API para realizar peticiones
+    ApiClient weatherAPI(API_KEY, URL);
+    weatherAPI.ApiHandler();
+    
+    // Guardamos el JSON respuesta de la API en un string
+    std::string jsonResponse = weatherAPI.get_ResponseData(); 
+ 
     // Parsear el JSON y almacenar los datos en la estructura We
     weatherCity.get_API_current_data(jsonResponse);
-
+ 
     //Copiamos los datos de la estructura que ha venido de la API a una estructura local
-    Current currentData_;
-    currentData_ = weatherCity.get_current_data();
+    Current currentData_ = weatherCity.get_current_data();
     
     // Imprimir los datos del clima
     std::cout << "Dt: " <<  currentData_.dt << std::endl;
