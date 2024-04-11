@@ -8,6 +8,15 @@ objdir := obj
 # Obtener la lista de archivos de código fuente en la carpeta src/
 srcfiles := $(wildcard $(srcdir)/*.cpp)
 
+# Carpeta que contiene los archivos de inclusión de curl
+curl_includedir := /usr/include
+
+# Carpeta que contiene las bibliotecas compartidas de curl
+curl_libdir := /usr/lib/x86_64-linux-gnu
+
+# Agregar la carpeta de inclusión de curl al path de inclusión del sistema
+CXXFLAGS += -I$(curl_includedir)
+
 # Agregar main.cpp a la lista de archivos fuente
 srcfiles += main.cpp
 
@@ -17,6 +26,9 @@ objects += $(patsubst %.cpp, $(objdir)/%.o, $(filter main.cpp, $(srcfiles)))
 
 # Rutas de inclusión
 CPPFLAGS := -I$(includedir)
+
+# Librerías necesarias
+LDLIBS += -lcurl
 
 # Reglas
 all: $(appname)

@@ -3,10 +3,13 @@
 // This video is donde with html, CSS and JS. We will use C++ an python in this project
 
 /*The objetctive of this project is to make an application in C++ and Python which takes data 
-from Openweathermap API and presents it to the user*/
+from Openweathermap API and presents it to the user
+
+*/
 #include <iostream>
 #include <cstring>
 #include "include/weather.h"
+#include "include/APIclient.h"
 
 int main()
 {
