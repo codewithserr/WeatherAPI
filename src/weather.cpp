@@ -55,16 +55,3 @@ std::string weather::get_LongitudeString(double lon)
     _LongitudeStr = std::to_string(lon);
     return _LongitudeStr;
 }
-
-void weather::set_latitude(double lat)
-{
-    latitude = lat;
-}
-void weather::set_longitude(double lon)
-{
-    longitude = lon;
-}
-void weather::set_altitude(double alt)
-{
-    altitude = alt;
-}
