@@ -22,26 +22,47 @@ int main()
  
     //Leemos la API KEY del fichero separado.
     std::string API_KEY = readAPIkeyFromFile("API_KEY");
-    
-    //Creamos el objeto de la clase Weather, y lo inicializamos para pruebas
-    weather weatherCity(40.416775, -3.703790, 600., "Madrid");
 
-    //Construimos la URL para la petición a la API
-    std::string URL = "https://api.openweathermap.org/data/3.0/onecall?lat=" + weatherCity.get_LatitudeString(weatherCity.get_Latitude()) + 
+
+    //Pedimos al usuario que introduzca manualmente la ciudad de la cual quiere obtener el tiempo
+    std::string City;
+    std::cout << "Introducir el nombre de la ciudad: " << std::endl;
+    std::getline(std::cin, City);
+
+    //Creamos el objeto de la clase Weather, y lo inicializamos por defecto 
+    weather weatherCity(City);
+
+    //Construimos la URL para la peticion a la API que nos devolverá la geolocalizacion
+    std::string URL_GEO = "https://api.openweathermap.org/geo/1.0/direct?q=" + City + "&limit=1&appid=" + API_KEY;
+
+    //Creamos el objeto de la clase API para realizar peticiones
+    ApiClient geoAPI(API_KEY, URL_GEO);
+    geoAPI.ApiHandler();
+
+    // Guardo la respuesta de la API Geo en un string, y despues parseo el JSON y copio los datos de la API
+    // en estructura local
+    std::string geoResponse = geoAPI.get_ResponseData();
+    weatherCity.get_API_location_Data(geoResponse);
+    Location location = weatherCity.get_location_data();
+
+    // Para la ciudad en cuestion, guardamos la respuesta de la API en su estructura
+    weatherCity.set_latitude(location.latitude);
+    weatherCity.set_longitude(location.longitude);
+    weatherCity.set_altitude(location.altitude);
+
+    //Construimos la URL para la petición a la API que nos devolverá los datos del
+    std::string URL_WEATHER = "https://api.openweathermap.org/data/3.0/onecall?lat=" + weatherCity.get_LatitudeString(weatherCity.get_Latitude()) + 
                       "&lon=" + weatherCity.get_LongitudeString(weatherCity.get_Longitude()) + 
                       "&appid=" + API_KEY;
 
     //Creamos el objeto de la clase API para realizar peticiones
-    ApiClient weatherAPI(API_KEY, URL);
+    ApiClient weatherAPI(API_KEY, URL_WEATHER);
     weatherAPI.ApiHandler();
     
-    // Guardamos el JSON respuesta de la API en un string
+    // Guardamos el JSON respuesta de la API en un string, parseo el JSON y copio los datos de la API en 
+    // estructura local
     std::string jsonResponse = weatherAPI.get_ResponseData(); 
- 
-    // Parsear el JSON y almacenar los datos en la estructura We
     weatherCity.get_API_current_data(jsonResponse);
- 
-    //Copiamos los datos de la estructura que ha venido de la API a una estructura local
     Current currentData_ = weatherCity.get_current_data();
     
     // Imprimir los datos del clima

@@ -1,5 +1,13 @@
 #include <iostream>
 #include <string>
+#include <tuple>
+
+struct Location
+{
+    double latitude;
+    double longitude;
+    double altitude;
+};
 
 //Current weather data API response
 struct Current

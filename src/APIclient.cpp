@@ -23,7 +23,8 @@ void ApiClient::ApiHandler()
         } else 
         {
             std::cout << "Datos recibidos:" << std::endl;
-            std::cout << response_data << std::endl;
+            // Descomentar la linea si queremos mostrar datos de respuesta
+            //std::cout << response_data << std::endl;
         }
 
         // Limpiar y cerrar libcurl
