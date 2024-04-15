@@ -24,10 +24,12 @@ int main()
     std::string API_KEY = readAPIkeyFromFile("API_KEY");
     
     //Creamos el objeto de la clase Weather, y lo inicializamos para pruebas
-    weather weatherCity(10., 10., 0., "Madrid");
+    weather weatherCity(40.416775, -3.703790, 600., "Madrid");
 
     //Construimos la URL para la petición a la API
-    std::string URL = "https://api.openweathermap.org/data/3.0/onecall?lat=33.44&lon=-94.04&appid=" + API_KEY;
+    std::string URL = "https://api.openweathermap.org/data/3.0/onecall?lat=" + weatherCity.get_LatitudeString(weatherCity.get_Latitude()) + 
+                      "&lon=" + weatherCity.get_LongitudeString(weatherCity.get_Longitude()) + 
+                      "&appid=" + API_KEY;
 
     //Creamos el objeto de la clase API para realizar peticiones
     ApiClient weatherAPI(API_KEY, URL);

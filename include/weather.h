@@ -2,6 +2,7 @@
 #define WEATHER_H
 
 #include <iostream>
+#include <cstring>
 #include "API_struct.h"
 
 // Clase para parsear el JSON y almacenar los datos del clima
@@ -24,6 +25,12 @@ public:
 
     void get_API_current_data(const std::string&); //Funcion para recoger los datos devueltos por la API 
     Current get_current_data(){return currentData;};
+
+    double get_Latitude(){return latitude;}
+    double get_Longitude(){return longitude;}
+    std::string get_LatitudeString(double lat);
+    std::string get_LongitudeString(double lon);
+
 
 };
 
