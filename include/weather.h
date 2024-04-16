@@ -4,34 +4,42 @@
 #include <iostream>
 #include <cstring>
 #include "API_struct.h"
+#include "APIclient.h"
 
-// Clase para parsear el JSON y almacenar los datos del clima
+////////////////////////////////////////////////////
+//                Weather Class                  ///
+////////////////////////////////////////////////////
+
+/*
+    This class is used for Manage the application by itself.
+    - Define the location for retrieving data from API
+    - Manage what APIs needs to be called
+*/
+
 class weather
 {
 
 private:
-    // Definimos los atributos que necesitamos para definir el tiempo en una localizacion
-    double latitude;
-    double longitude;
-    double altitude;
+    // Location attributes
+    double latitude, longitude, altitude;
     std::string city;
   
-    //Estructura con los atributos propios que vendrán de la API del tiempo
+    // Structure with to fill with weather API data
     Current currentData;
 
-    //Estructura con los atributos que vendrán de la API de geolocalización
+    // Structure with to fill with geolocalization API data
     Location locationData;
 
 public:
 
     weather(std::string city_) : city(city_){};
 
-    void get_API_location_Data(const std::string&);//Funcion para recoger los datos devueltos por la API geolocalizacion
-    void get_API_current_data(const std::string&); //Funcion para recoger los datos devueltos por la API del tiempo
-    Current get_current_data(){return currentData;}
-    Location get_location_data(){return locationData;}
+    void get_API_location_Data(const std::string&);//Store data retrieved from Geolocation API
+    void get_API_current_data(const std::string&); //Store data retrieved from Weather API
+    Current get_current_data(){return currentData;} //Returns weather API data in a struct
+    Location get_location_data(){return locationData;} //Returns geo API data in a struct
 
-    //Metodos GET para devolver valro atributos privados
+    //GET METHODS
     double get_Latitude(){return latitude;}
     double get_Longitude(){return longitude;}
     double get_Altitude(){return altitude;}
@@ -39,10 +47,14 @@ public:
     std::string get_LatitudeString(double lat);
     std::string get_LongitudeString(double lon);
 
-    //Metodos SET para setear valor a atributos
+    //SET METHODS
     void set_latitude(double lat){latitude = lat;}
     void set_longitude(double lon){longitude = lon;}
     void set_altitude(double alt){altitude = alt;}
+
+    //MANAGE APIs
+    void APIsManagement(weather, std::string _API_KEY);
+
 
     
 };

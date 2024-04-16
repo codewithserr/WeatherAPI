@@ -4,6 +4,7 @@
 
 struct Location
 {
+    std::string name;
     double latitude;
     double longitude;
     double altitude;
