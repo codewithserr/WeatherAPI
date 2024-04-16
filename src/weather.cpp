@@ -28,20 +28,23 @@ void weather::get_API_current_data(const std::string& jsonDATA)
         json data = json::parse(jsonDATA);
 
         // Obtener los valores relevantes del JSON y asignarlos a la estructura WeatherData
-        currentData.dt = data["current"]["dt"];
-        currentData.sunrise = data["current"]["sunrise"];
-        currentData.sunset = data["current"]["sunset"];
-        currentData.temp = data["current"]["temp"];
-        currentData.feels_like = data["current"]["feels_like"];
-        currentData.pressure = data["current"]["pressure"];
-        currentData.humidity = data["current"]["humidity"];
-        currentData.dew_point = data["current"]["dew_point"];
-        currentData.uvi = data["current"]["uvi"];
-        currentData.clouds = data["current"]["clouds"];
-        currentData.visibility = data["current"]["visibility"]; 
-        currentData.wind_speed = data["current"]["wind_speed"];
-        currentData.wind_deg = data["current"]["wind_deg"];
-        currentData.wind_gust = data["current"]["wind_gust"];
+        for(auto& [key, value] : data["current"].items())
+        {
+            if (key == "dt") currentData.dt = value;
+            else if (key == "sunrise") currentData.sunrise = value;
+            else if (key == "sunset") currentData.sunset = value;
+            else if (key == "temp") currentData.temp = value;
+            else if (key == "feels_like") currentData.feels_like = value;
+            else if (key == "pressure") currentData.pressure = value;
+            else if (key == "humidity") currentData.humidity = value;
+            else if (key == "dew_point") currentData.dew_point = value;
+            else if (key == "uvi") currentData.uvi = value;
+            else if (key == "clouds") currentData.clouds = value;
+            else if (key == "visibility") currentData.visibility = value;
+            else if (key == "wind_speed") currentData.wind_speed = value;
+            else if (key == "wind_deg") currentData.wind_deg = value;
+            else if (key == "wind_gust") currentData.wind_gust = value;
+        }
 
     } catch (const std::exception& e) 
     {
@@ -122,5 +125,6 @@ void weather::APIsManagement(weather _weather, std::string _API_KEY)
     std::cout << "Latitud: " << location.latitude << std::endl;
     std::cout << "Longitud: " << location.longitude << std::endl;
     std::cout << "Temperatura: " <<  currentData_.temp << std::endl;
+
 
 }
