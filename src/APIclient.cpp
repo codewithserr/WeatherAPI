@@ -22,7 +22,7 @@ void ApiClient::ApiHandler()
             std::cerr << "Error en la solicitud HTTP: " << curl_easy_strerror(res) << std::endl;
         } else 
         {
-            std::cout << "Datos recibidos:" << std::endl;
+            std::cout << "Datos recibidos correctamente" << std::endl;
             // Descomentar la linea si queremos mostrar datos de respuesta
             //std::cout << response_data << std::endl;
         }

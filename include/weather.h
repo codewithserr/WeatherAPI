@@ -1,10 +1,18 @@
 #ifndef WEATHER_H
 #define WEATHER_H
 
+// System Includes
 #include <iostream>
 #include <cstring>
+#include <time.h>
+
+// App Includes
 #include "API_struct.h"
 #include "APIclient.h"
+#include "json.hpp"
+
+using json = nlohmann::json;
+
 
 ////////////////////////////////////////////////////
 //                Weather Class                  ///
@@ -16,7 +24,7 @@
     - Manage what APIs needs to be called
 */
 
-class weather
+class Weather
 {
 
 private:
@@ -32,10 +40,14 @@ private:
 
 public:
 
-    weather(std::string city_) : city(city_){};
+    Weather(std::string city_) : city(city_){};
 
+    // METHODOS FOR STORING APIs DATA
     void get_API_location_Data(const std::string&);//Store data retrieved from Geolocation API
     void get_API_current_data(const std::string&); //Store data retrieved from Weather API
+
+    void validate_JSON_data(json); //Function for validating the structure of the received JSON.
+
     Current get_current_data(){return currentData;} //Returns weather API data in a struct
     Location get_location_data(){return locationData;} //Returns geo API data in a struct
 
@@ -53,10 +65,14 @@ public:
     void set_altitude(double alt){altitude = alt;}
 
     //MANAGE APIs
-    void APIsManagement(weather, std::string _API_KEY);
+    void APIsManagement(Weather, std::string _API_KEY);
 
+    // METHOD FOR CONVERTING FROM UNIX UTC TIME TO HUMAN READABLE TIMESTAMP
+    std::string convertTime(time_t datetime);
 
-    
+    // METHOD FOR CONVERTING TEMPERATURE UNITS
+    double convertTemp(double temp, std::string UNIT);
+
 };
 
 #endif

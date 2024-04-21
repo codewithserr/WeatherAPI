@@ -9,17 +9,11 @@ from Openweathermap API and presents it to the user
 #include <iostream>
 #include <cstring>
 #include "include/weather.h"
-//#include "include/APIclient.h"
 #include "include/utils.h"
 
 int main()
 {
-/*
-    Lo que está actualmente escrito en este main es una prueba para corroborar que se parsea
-    el fichero JSON que llegue, se introducen los datos en una estructura, y se imprime
-    por pantalla.
-*/
- 
+
     //Read API KEY from separated file
     std::string API_KEY = readAPIkeyFromFile("API_KEY");
 
@@ -29,7 +23,7 @@ int main()
     std::getline(std::cin, City);
 
     //Class weather objecto for the input city
-    weather weatherCity(City);
+    Weather weatherCity(City);
 
     // Call APIs management function
     weatherCity.APIsManagement(weatherCity, API_KEY);
