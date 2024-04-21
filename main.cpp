@@ -11,11 +11,19 @@ from Openweathermap API and presents it to the user
 #include "include/weather.h"
 #include "include/utils.h"
 
-int main()
+int main(int argc, char *argv[])
 {
+    // Get the execution PATH of the program for using it for reading API_KEY
+    std::string executableDirectory  = getExecutableDirectory();
+    if (!executableDirectory .empty()) {
+        std::cout << "Program executing from: " << executableDirectory  << std::endl;
+    } else {
+        std::cerr << "Error obtaining absolute path of the executable." << std::endl;
+    }
+
 
     //Read API KEY from separated file
-    std::string API_KEY = readAPIkeyFromFile("API_KEY");
+    std::string API_KEY = readAPIkeyFromFile(executableDirectory  + "/API_KEY");
 
     //Asks the user the name of the location
     std::string City;
