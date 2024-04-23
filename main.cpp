@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     std::cout << "Introducir el nombre de la ciudad: " << std::endl;
     std::getline(std::cin, City);
 
-    //Class weather objecto for the input city
+    //Class weather object for the city
     Weather weatherCity(City);
 
     // Call APIs management function

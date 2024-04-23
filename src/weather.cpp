@@ -10,7 +10,7 @@ void Weather::get_API_location_Data(const std::string& jsonDATA)
 {
     json data = json::parse(jsonDATA);
 
-    //Send the JSON data to a separated file. Open file for writing JSON.
+    //Send the JSON data to a separated file for debugging purposes. Open file for writing JSON.
     std::ofstream outputFile("JSON/LOCATIONresponse.json");
     if (!outputFile.is_open()) {
         std::cerr << "Error opening output JSON file." << std::endl;
@@ -22,14 +22,14 @@ void Weather::get_API_location_Data(const std::string& jsonDATA)
 
     try 
     {
-        // Obtener los valores relevantes del JSON y asignarlos a la estructura WeatherData
+        // Obtain data from JSON and assign it to the location struct
         locationData.name = data[0]["name"];
         locationData.latitude = data[0]["lat"];
         locationData.longitude = data[0]["lon"];
         locationData.altitude = data[0]["alt"];
     } catch (const std::exception &e) 
     {
-        std::cerr << "Error al parsear el JSON respuesta GEOLOCALIZACIón: " << e.what() << std::endl;
+        std::cerr << "Error parsing GEO JSON Data: " << e.what() << std::endl;
     }
 
 };
@@ -42,7 +42,7 @@ void Weather::get_API_current_data(const std::string& jsonDATA)
    try 
    {
 
-        //Send the JSON data to a separated file. Open file for writing JSON.
+    //Send the JSON data to a separated file for debugging purposes. Open file for writing JSON.
         std::ofstream outputFile("JSON/APIresponse.json");
         if (!outputFile.is_open()) {
             std::cerr << "Error opening output JSON file." << std::endl;
@@ -68,14 +68,13 @@ void Weather::get_API_current_data(const std::string& jsonDATA)
         currentData.wind_deg = data["current"]["wind_deg"];
         currentData.wind_gust = data["current"]["wind_gust"];        
 
-        // Acceder a la sección "weather" dentro de "current"
+        // Current -> Weather
         currentData.weatherData.description = data["current"]["weather"][0]["description"];
         currentData.weatherData.icon = data["current"]["weather"][0]["icon"];
         currentData.weatherData.id = data["current"]["weather"][0]["id"];
         currentData.weatherData.main = data["current"]["weather"][0]["main"];
 
-        
-
+    
 
         // Take data from JSON and save it each struct
        /* for(auto& [key, value] : data["current"].items())
@@ -201,7 +200,7 @@ void Weather::get_API_current_data(const std::string& jsonDATA)
     
     } catch (const std::exception &e) 
     {
-        std::cerr << "Error al parsear el JSON respuesta del tiempo: " << e.what() << std::endl;
+        std::cerr << "Error parsing JSON Weather data: " << e.what() << std::endl;
     }
 
 };
@@ -210,8 +209,6 @@ void Weather::get_API_current_data(const std::string& jsonDATA)
 std::string Weather::get_LatitudeString(double lat)
 {
     std::string _latitudeStr;
-
-    // to_string(n) converts a double to a string
     _latitudeStr = std::to_string(lat);
     return _latitudeStr;
 }
@@ -219,8 +216,6 @@ std::string Weather::get_LatitudeString(double lat)
 std::string Weather::get_LongitudeString(double lon)
 {
     std::string _LongitudeStr;
-
-    // to_string(n) converts a double to a string
     _LongitudeStr = std::to_string(lon);
     return _LongitudeStr;
 }
@@ -277,9 +272,8 @@ void Weather::APIsManagement(Weather _weather, std::string _API_KEY)
     Current currentData_ = _weather.get_current_data();
     
     // Print weather actual data
-    std::cout << "Ciudad seleccionada: " << location.name << std::endl;
-    std::cout << "/n" << std::endl;
-    std::cout << "Current UTC Time: " <<  convertTime(currentData_.dt) << std::endl;
+    std::cout << "Current weather data for: " << location.name << " at " << convertTime(currentData_.dt) <<std::endl;
+    std::cout << "---------------------------------------" << std::endl;
     std::cout << "Sunrise Time: " <<  convertTime(currentData_.sunrise) << std::endl;
     std::cout << "Sunset Time: " <<  convertTime(currentData_.sunset) << std::endl;
     std::cout << "Temperature: " <<  convertTemp(currentData_.temp, "Deg") << " ºC" <<std::endl;
@@ -291,6 +285,7 @@ void Weather::APIsManagement(Weather _weather, std::string _API_KEY)
     std::cout << "Visibility: " <<  currentData_.visibility << " m" <<std::endl;
     std::cout << "Wind Speed: " <<  currentData_.wind_speed << " m/s" <<std::endl;
     std::cout << "Wind Direction: " <<  currentData_.wind_deg << "º" <<std::endl;
+
 }
 
 std::string Weather::convertTime(time_t datetime)
@@ -301,29 +296,13 @@ std::string Weather::convertTime(time_t datetime)
 
 double Weather::convertTemp(double temp, std::string UNIT)
 {
-    int units; //Deg=1, F=2 
-
     if(UNIT == "Deg") 
-        units = 1;
+        temp = temp - 273.15;
     else if (UNIT == "F")
-         units = 2;
+        temp = 1.8 * (temp - 273.15) + 32;
     else
         std::cout << "Invalid temperature units" << std::endl;
     
-    switch (units)
-    {
-        case 1: // K -> Deg
-            temp = temp - 273.15;
-            break;
-        case 2: // K -> F
-            temp = temp - 273.15;
-            break;
-
-        default:
-            temp = 1.8 * (temp - 273.15) + 32;
-            break;
-    }
-
     return temp;
 }
 

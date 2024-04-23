@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <libgen.h>
 
-// Función que lee la API Key de un fichero aparte
+// Method which read API KEY from a separated file
 std::string readAPIkeyFromFile(const std::string& filename)
 {
     std::ifstream file(filename);
@@ -28,6 +28,7 @@ std::string readAPIkeyFromFile(const std::string& filename)
     return APIkey;
 }
 
+// Get Application execution path
 std::string getExecutablePath()
 {
     char buffer[PATH_MAX];
@@ -40,6 +41,7 @@ std::string getExecutablePath()
     }
 }
 
+//Get Application execution directory
 std::string getExecutableDirectory()
 {
     char buffer[PATH_MAX];

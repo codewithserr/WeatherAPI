@@ -1,10 +1,5 @@
 /*
-    Clase que implementa todo lo relacionado a las llamadas a la API.
-
-    En este fichero cabe la excepción de que existan funcionalidades en
-    los metodos, no solo prototipos, pues es interesante para que exista
-    portabilidad de código.
-
+Class that implements everything related to API calls.
 */
 
 #include <iostream>
@@ -17,9 +12,12 @@ class ApiClient
     std::string URL;
     std::string response_data;
 
-    // Función de escritura para recibir datos de la solicitud HTTP
-    // Al declarar "write_callback" como una función estática privada dentro de la clase ApiClient,
-    // puede ser utilizada dentro de la función ApiHandler sin problemas de alcance.
+/**
+ * Write function to receive data from the HTTP request. 
+ * By declaring "write_callback" as a private static function inside the ApiClient class, 
+ * it can be used inside the ApiHandler function without scope issues.
+ * 
+*/
     static size_t write_callback(char *ptr, size_t size, size_t nmemb, std::string *data) 
     {
         data->append(ptr, size * nmemb);
@@ -27,17 +25,17 @@ class ApiClient
     }
     
     public:
-    //El constructor de la clase toma como parametros el API LEY y la URL de la API
+    //The class constructor takes the API KEY and the API URL as parameters
     ApiClient(std::string API_KEY_, std::string URL_) : API_KEY(API_KEY_), URL(URL_){};
 
-    //Funcion que retorna la URL
+    // Method which returns the URL
     std::string Get_URL() {return URL;}
 
-    // Funcion que maneja todo lo relacionado con las llamadas a la API y 
-    // recepción de los datos de respuesta
+    
+    //Method for handlign everything related with API calls and received data    
     void ApiHandler();
 
-    //Funcion que devuelve la respuesta de la API
+    //Method which retrieves API response
     std::string get_ResponseData(){return response_data;}
 
 };
