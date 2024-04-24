@@ -5,7 +5,7 @@ project will be C++ and Python.
 C++ will be used for the development of the backend. That is: connection to the API and retrive 
 data from there. 
 
-Python will be used for testing and converting text to audio.
+Python will be used for testing and presenting the report on a GUI made with Tkinter.
 
 The OpenWeatherMap API gives the next example of JSON file as response: 
 https://openweathermap.org/api/one-call-3#start
@@ -13,10 +13,10 @@ https://openweathermap.org/api/one-call-3#start
 Functionallity:
 - Application calls OpenWeather API and takes current actual data from any location.
 - A report is written with actual weather in the specified location
+- This report appears on a screen
 
-NExt Item which will be implemented:
-- The report is going to be converted to audio.
-
+Next Steps:
+- README will be updated with the steps for running the application
 
 
 
