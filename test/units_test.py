@@ -2,8 +2,8 @@ import unittest
 import subprocess
 
 # This is a simple test which test the units conversion from a methor written in C++
-class unitsTest(unittest.TestCase):
-    def testUnitsConversion(self):
+class UnitsConversionTest(unittest.TestCase):
+    def test_UnitsConversion(self):
         # Define the input of the city for the program
         input_data = b"Madrid\n" 
 
@@ -23,6 +23,7 @@ class unitsTest(unittest.TestCase):
 
         # Verify the expected output
         self.assertEqual(rounded_output, rounded_expected)
+    
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
