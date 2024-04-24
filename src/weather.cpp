@@ -1,4 +1,5 @@
 #include <fstream>
+#include <cstdlib>
 
 
 #include "../include/weather.h"
@@ -266,32 +267,99 @@ void Weather::APIsManagement(Weather _weather, std::string _API_KEY)
     weatherAPI.ApiHandler();
     
     // Guardamos el JSON respuesta de la API en un string, parseo el JSON y copio los datos de la API en 
-    // estructura local
+    // estructura
     std::string jsonResponse = weatherAPI.get_ResponseData(); 
     _weather.get_API_current_data(jsonResponse);
     Current currentData_ = _weather.get_current_data();
-    
-    // Print weather actual data
-    std::cout << "Current weather data for: " << location.name << " at " << convertTime(currentData_.dt) <<std::endl;
-    std::cout << "---------------------------------------" << std::endl;
-    std::cout << "Sunrise Time: " <<  convertTime(currentData_.sunrise) << std::endl;
-    std::cout << "Sunset Time: " <<  convertTime(currentData_.sunset) << std::endl;
-    std::cout << "Temperature: " <<  convertTemp(currentData_.temp, "Deg") << " ºC" <<std::endl;
-    std::cout << "Pressure: " <<  currentData_.pressure << " HPa" <<std::endl;
-    std::cout << "Humidity: " <<  currentData_.humidity << " %" <<std::endl;
-    std::cout << "Dew Point: " <<  convertTemp(currentData_.dew_point, "Deg") << " ºC" << std::endl;
-    std::cout << "UVI Index: " <<  currentData_.uvi << std::endl;
-    std::cout << "Clouds: " <<  currentData_.clouds <<  " %" <<std::endl;
-    std::cout << "Visibility: " <<  currentData_.visibility << " m" <<std::endl;
-    std::cout << "Wind Speed: " <<  currentData_.wind_speed << " m/s" <<std::endl;
-    std::cout << "Wind Direction: " <<  currentData_.wind_deg << "º" <<std::endl;
 
+    //Create a Weather report for this location
+    _weather.createActualWeatherReport(currentData_, location);
+
+}
+
+void Weather::createActualWeatherReport(Current data, Location loc)
+{
+    std::string report ="This is Current weather data for: " + loc.name + " at " + convertTime(data.dt) + ".\n" +
+                        "Sunrrise time is: " + getTime(data.sunrise) + ",\n " +
+                        "Sunset time is: "   +  getTime(data.sunset) + ",\n " +
+                        "Temperature: " +  std::to_string(convertTemp(data.temp, "Deg")) + " ºC" + ",\n " +
+                        "Pressure: "  +   std::to_string(data.pressure) + " HPa" + ",\n " +
+                        "Humidity: "  +  std::to_string(data.humidity) + " %" + ",\n " +
+                        "Dew Point: " +  std::to_string(convertTemp(data.dew_point, "Deg")) +" ºC" + ",\n " +
+                        "UVI Index: " +   std::to_string(data.uvi) + ",\n " +
+                        "Clouds: "    +  std::to_string(data.clouds) +  " %" + ",\n " +
+                        "Visibility: " +   std::to_string(data.visibility) + " m" + ",\n " +
+                        "Wind Speed: " +   std::to_string(data.wind_speed) + " m/s" + ",\n " +
+                        "Wind Direction: " +  std::to_string(data.wind_deg) + "º" + ".\n " +
+                        "This is the end of the report at " + convertTime(data.dt);
+
+    // Open file for writing the report
+    std::ofstream file("report.txt");
+
+    // Verify if file is opened
+    if (file.is_open()) {
+        // Write the report
+        file << report;
+
+        // Close the file
+        file.close();
+
+        std::cout << "Report has been correctly written" << std::endl;
+    } else {
+        std::cerr << "Error opening report file." << std::endl;
+    }
+
+    //Move this file to the report folder.
+    moveReports("report.txt", "reports");
+
+}
+
+void Weather::moveReports(const std::string& file, const std::string& folder)
+{
+    // Execute the command for moving the file
+    std::string moveFile = "mv " + file + " " + folder;
+    int result = std::system(moveFile.c_str());
+
+    // Verify if it has worked
+    if (result == 0) {
+        std::cout << "File has been moved to destination folder" << std::endl;
+    } else {
+        std::cerr << "Error while moving report file to reports folder." << std::endl;
+    }
+}
+
+std::string Weather::getActualTime()
+{
+    // Obtain local time
+    auto now = std::chrono::system_clock::now();
+    std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+    std::stringstream time;
+    time << std::ctime(&currentTime);
+    
+    //Return actual time as string
+    return time.str(); 
 }
 
 std::string Weather::convertTime(time_t datetime)
 {
     std::string time = ctime(&datetime);
     return time;
+}
+
+std::string Weather::getTime(time_t datetime)
+{
+    // conver time to a tm struct
+    std::tm* time = std::localtime(&datetime);
+
+    //Create a buffer for storing time
+    char buffer[80];
+
+    //Format HH::MM
+    std::strftime(buffer, 80, "%H:%M",time);
+
+    //Returns time
+    return std::string(buffer);
+
 }
 
 double Weather::convertTemp(double temp, std::string UNIT)

@@ -34,13 +34,17 @@ private:
   
     // Structure with to fill with weather API data
     Current currentData;
+    Current *ptrCurrentData; //Pointer to this structure
 
     // Structure with to fill with geolocalization API data
     Location locationData;
 
 public:
 
-    Weather(std::string city_) : city(city_){};
+    Weather(std::string city_) : city(city_)
+    {
+        ptrCurrentData = &currentData;
+    }
 
     // METHODOS FOR STORING APIs DATA
     void get_API_location_Data(const std::string&);//Store data retrieved from Geolocation API
@@ -69,9 +73,19 @@ public:
 
     // METHOD FOR CONVERTING FROM UNIX UTC TIME TO HUMAN READABLE TIMESTAMP
     std::string convertTime(time_t datetime);
+    std::string getTime(time_t datetime);
+
+    //METHOD WHICH RETURNS A STRING WITH ACTUAL TIME
+    std::string getActualTime();
 
     // METHOD FOR CONVERTING TEMPERATURE UNITS
     double convertTemp(double temp, std::string UNIT);
+
+    // METHOD WHICH CREATS A TEXT FILE WITH CURRENT WEATHER REPORT
+    void createActualWeatherReport(Current data, Location loc);
+
+    // METHOD FOR MOVIND REPORT FILES
+    void moveReports(const std::string& file, const std::string& folder);
 
 };
 
