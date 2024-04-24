@@ -279,18 +279,20 @@ void Weather::APIsManagement(Weather _weather, std::string _API_KEY)
 
 void Weather::createActualWeatherReport(Current data, Location loc)
 {
-    std::string report ="This is Current weather data for: " + loc.name + " at " + convertTime(data.dt) + ".\n" +
-                        "Sunrrise time is: " + getTime(data.sunrise) + ",\n " +
-                        "Sunset time is: "   +  getTime(data.sunset) + ",\n " +
-                        "Temperature: " +  std::to_string(convertTemp(data.temp, "Deg")) + " ºC" + ",\n " +
-                        "Pressure: "  +   std::to_string(data.pressure) + " HPa" + ",\n " +
-                        "Humidity: "  +  std::to_string(data.humidity) + " %" + ",\n " +
-                        "Dew Point: " +  std::to_string(convertTemp(data.dew_point, "Deg")) +" ºC" + ",\n " +
-                        "UVI Index: " +   std::to_string(data.uvi) + ",\n " +
-                        "Clouds: "    +  std::to_string(data.clouds) +  " %" + ",\n " +
-                        "Visibility: " +   std::to_string(data.visibility) + " m" + ",\n " +
-                        "Wind Speed: " +   std::to_string(data.wind_speed) + " m/s" + ",\n " +
-                        "Wind Direction: " +  std::to_string(data.wind_deg) + "º" + ".\n " +
+    std::string report ="This is Current weather data for: " + loc.name + " at " + convertTime(data.dt)  + 
+                        "\n" +
+                        "Sunrrise time is: " + getTime(data.sunrise) + ",\n" +
+                        "Sunset time is: "   +  getTime(data.sunset) + ",\n" +
+                        "Temperature: " +  std::to_string(convertTemp(data.temp, "Deg")) + " ºC" + ",\n" +
+                        "Pressure: "  +   std::to_string(data.pressure) + " HPa" + ",\n" +
+                        "Humidity: "  +  std::to_string(data.humidity) + " %" + ",\n" +
+                        "Dew Point: " +  std::to_string(convertTemp(data.dew_point, "Deg")) +" ºC" + ",\n" +
+                        "UVI Index: " +   std::to_string(data.uvi) + ",\n" +
+                        "Clouds: "    +  std::to_string(data.clouds) +  " %" + ",\n" +
+                        "Visibility: " +   std::to_string(data.visibility) + " m" + ",\n" +
+                        "Wind Speed: " +   std::to_string(data.wind_speed) + " m/s" + ",\n" +
+                        "Wind Direction: " +  std::to_string(data.wind_deg) + "º" + ".\n" +
+                        "\n" +
                         "This is the end of the report at " + convertTime(data.dt);
 
     // Open file for writing the report

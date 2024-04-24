@@ -21,14 +21,18 @@ int main(int argc, char *argv[])
         std::cerr << "Error obtaining absolute path of the executable." << std::endl;
     }
 
-
     //Read API KEY from separated file
     std::string API_KEY = readAPIkeyFromFile(executableDirectory  + "/API_KEY");
 
-    //Asks the user the name of the location
-    std::string City;
-    std::cout << "Introducir el nombre de la ciudad: " << std::endl;
-    std::getline(std::cin, City);
+    // The location is filled as a parameter selected from the GUI
+    if (argc != 2) {
+        std::cerr << "Uso: " << argv[0] << " <nombre_ciudad>" << std::endl;
+        return 1;
+    }
+
+    std::string City = argv[1];
+    //std::cout << "Introducir el nombre de la ciudad: " << std::endl;
+    //std::getline(std::cin, City);
 
     //Class weather object for the city
     Weather weatherCity(City);
