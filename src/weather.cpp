@@ -312,7 +312,7 @@ void Weather::createActualWeatherReport(Current data, Location loc)
     }
 
     //Move this file to the report folder.
-    moveReports("report.txt", "reports");
+    moveReports("report.txt", "reports/text");
 
 }
 

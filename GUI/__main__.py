@@ -10,7 +10,7 @@ def run_cpp_app(city, text_widget):
     text_widget.delete("1.0", tk.END)  
 
     # Read the content of the received report file, and show it on a text box.
-    with open("reports/report.txt", "r") as file:
+    with open("reports/text/report.txt", "r") as file:
         report = file.read()
         text_widget.insert(tk.END, report)
 

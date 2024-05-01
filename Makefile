@@ -9,36 +9,26 @@ objdir := obj
 # Obtener la lista de archivos de código fuente en la carpeta src/
 srcfiles := $(wildcard $(srcdir)/*.cpp)
 
-# Obtener la lista de archivos de código fuente en la carpeta GUI/
-guifiles := $(wildcard $(guidir)/*.cpp)
-
 # Carpeta que contiene los archivos de inclusión de curl
 curl_includedir := /usr/include
 
 # Carpeta que contiene las bibliotecas compartidas de curl
 curl_libdir := /usr/lib/x86_64-linux-gnu
 
-# Carpeta que contiene los archivos de inclusión de GTK
-gtk_includedir := /usr/include/gtk-3.0
-
-# Carpeta que contiene las bibliotecas compartidas de GTK
-gtk_libdir := /usr/lib/x86_64-linux-gnu
-
 # Agregar la carpeta de inclusión de curl al path de inclusión del sistema
-CXXFLAGS += -I$(curl_includedir) -I$(gtk_includedir)
+CXXFLAGS += -I$(curl_includedir) 
 
 # Agregar main.cpp a la lista de archivos fuente
-srcfiles += main.cpp $(guifiles)
+srcfiles += main.cpp 
 
 # Generar la lista de objetos correspondientes a los archivos fuente
 objects := $(patsubst $(srcdir)/%.cpp, $(objdir)/%.o, $(filter-out main.cpp, $(srcfiles)))
 objects += $(patsubst %.cpp, $(objdir)/%.o, $(filter main.cpp, $(srcfiles)))
 
 # Rutas de inclusión
-CPPFLAGS := -I$(includedir) -I$(gtk_includedir)
-
+CPPFLAGS := -I$(includedir)
 # Librerías necesarias
-LDLIBS += -lcurl -lgtk-3
+LDLIBS += -lcurl 
 
 # Reglas
 all: $(appname)

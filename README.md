@@ -16,7 +16,7 @@ Functionallity:
 - This report appears on a screen
 
 Next Steps:
-- README will be updated with the steps for running the application
+- README will be updated with the steps for running the application and neccesary dependencies
 
 
 
